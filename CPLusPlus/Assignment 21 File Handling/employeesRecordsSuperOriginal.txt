@@ -1,0 +1,5 @@
+1,Mukul Kumar Yadav,20000
+2,Vijay Pal Yadav,30000
+3,Kanta Yadav,5000
+4,Manju Yadav,25000
+5,Anju Yadav,12000
