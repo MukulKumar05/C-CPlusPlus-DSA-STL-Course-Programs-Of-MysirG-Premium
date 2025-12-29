@@ -1,0 +1,171 @@
+#include<iostream>
+using namespace std;
+#define DUPLICATE_VALUE 5
+
+/*
+A14.7 In question 1, define a method for postorder traversing
+of BST.
+
+Problem Summary: define postOrderTraversal()
+(Completed)
+*/
+struct node
+{
+    node *left;
+    int item;
+    node *right;
+};
+class BST
+{
+    private:
+        node *root;
+    protected:
+        void deleteTree(node*);
+        void traverseBSTViaInorder(node*);
+        void traverseBSTViaPreorder(node*);
+        void traverseBSTViaPostorder(node*);
+    public:
+        BST();
+        bool isEmpty();
+        void insert(int);
+        ~BST();
+        void inOrderTraversal();
+        void preOrderTraversal();
+        void postOrderTraversal();
+};
+BST::BST()
+{
+    root = nullptr;
+}
+bool BST::isEmpty()
+{
+    return root == nullptr;
+}
+void BST::insert(int data) // to test
+{
+    node *newPtr = new node;
+    newPtr->left = nullptr;
+    newPtr->item = data;
+    newPtr->right = nullptr;
+    node *ptr = root;
+    node *parPtr = root;
+    while(ptr) // if BST has >= 1 elements
+    {
+        if(data == ptr->item)
+            throw DUPLICATE_VALUE;
+        else if(data > ptr->item)
+        {
+            parPtr = ptr;
+            ptr = ptr->right;
+        }
+        else if(data < ptr->item)
+        {
+            parPtr = ptr;
+            ptr = ptr->left;
+        }
+    }
+    if(root == nullptr) // if BST is empty
+    {
+        root = newPtr;
+    }
+    else if(data > parPtr->item)
+    {
+        parPtr->right = newPtr;
+    }
+    else if(data < parPtr->item)
+    {
+        parPtr->left = newPtr;
+    }
+}
+void BST::deleteTree(node *ptr)
+{
+    if(ptr) // if BST has >= 1 elements
+    {
+        if(ptr->left)
+        {
+            deleteTree(ptr->left);
+            ptr->left = nullptr;
+        }
+        if(ptr->right)
+        {
+            deleteTree(ptr->right);
+            ptr->right = nullptr;
+        }
+        delete ptr;
+    }
+}
+BST::~BST()
+{
+    deleteTree(root);
+}
+void BST::traverseBSTViaInorder(node *root) 
+{
+    if(root) // BST has >= 1 elements
+    {
+        if(root->left) // if left subtree exists
+            traverseBSTViaInorder(root->left);
+        cout<<root->item<<" ";
+        if(root->right) // if right subtree exists
+            traverseBSTViaInorder(root->right);
+    }
+}
+void BST::inOrderTraversal()
+{
+    if(root) // BST has >= 1 elements
+        traverseBSTViaInorder(root);
+    else // BST is empty.
+        cout<<"BST is empty."<<endl;
+}
+void BST::traverseBSTViaPreorder(node *root)
+{
+    if(root) // BST has >= 1 elements
+    {
+        cout<<root->item<<" ";
+        if(root->left) // if left subtree exists
+            traverseBSTViaPreorder(root->left);
+        if(root->right) // if right subtree exists
+            traverseBSTViaPreorder(root->right);
+    }
+}
+void BST::preOrderTraversal()
+{
+    if(root) // BST has >= 1 elements
+        traverseBSTViaPreorder(root);
+    else // BST is empty.
+        cout<<"BST is empty."<<endl;
+}
+void BST::traverseBSTViaPostorder(node *root)
+{
+    if(root) // BST has >= 1 elements
+    {
+        if(root->left) // if left subtree exists
+            traverseBSTViaPostorder(root->left);
+        if(root->right) // if right subtree exists
+            traverseBSTViaPostorder(root->right);
+        cout<<root->item<<" ";
+    }
+}
+void BST::postOrderTraversal()
+{
+    if(root) // BST has >= 1 elements
+        traverseBSTViaPostorder(root);
+    else // BST is empty.
+        cout<<"BST is empty."<<endl;
+}
+
+
+
+int main()
+{
+    BST b1;
+    b1.insert(50);
+    b1.insert(30);
+    b1.insert(80);
+    b1.insert(10);
+    b1.insert(40);
+    b1.insert(70);
+    b1.insert(100);
+    cout<<"Postorder Traversal of BST is "<<endl;
+    b1.postOrderTraversal();
+    return 0;
+}
